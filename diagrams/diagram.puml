@@ -1,0 +1,72 @@
+@startuml
+enum GameStatus {
+  IN_PROGRESS
+  CHECK
+  CHECKMATE
+  STALEMATE
+}
+
+class Game {
+  - board: Board
+  - players: Player[2]
+  - currentTurn: Player
+  - status: GameStatus
+  + startGame(): void
+  + makeMove(move: Move): boolean
+  + checkStatus(): GameStatus
+}
+
+class Board {
+  - grid: Piece[8][8]
+  + getPieceAt(pos: Position): Piece
+  + movePiece(from: Position, to: Position): boolean
+  + isCheck(): boolean
+  + isCheckmate(): boolean
+  + isStalemate(): boolean
+}
+
+class Player {
+  - color: String
+  + getColor(): String
+}
+
+abstract class Piece {
+  - color: String
+  - position: Position
+  + isValidMove(to: Position, board: Board): boolean
+}
+
+class Pawn extends Piece
+class Rook extends Piece
+class Knight extends Piece
+class Bishop extends Piece
+class Queen extends Piece
+class King extends Piece
+
+class Move {
+  - from: Position
+  - to: Position
+  + getFrom(): Position
+  + getTo(): Position
+}
+
+class Position {
+  - row: int
+  - col: int
+  + getRow(): int
+  + getCol(): int
+}
+
+Game --> Board
+Game --> Player
+Game --> GameStatus
+Board --> Piece
+Piece <|-- Pawn
+Piece <|-- Rook
+Piece <|-- Knight
+Piece <|-- Bishop
+Piece <|-- Queen
+Piece <|-- King
+Move --> Position
+Piece --> Position
+@enduml
